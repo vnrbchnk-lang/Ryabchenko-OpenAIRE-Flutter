@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:openaire_publications/common/widgets/locale_toggle_button.dart';
 import 'package:openaire_publications/common/widgets/theme_toggle_button.dart';
 import 'package:openaire_publications/l10n/app_localizations.dart';
 
@@ -12,7 +13,7 @@ class AppScaffold extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context).appTitle),
-        actions: const [ThemeToggleButton()],
+        actions: const [LocaleToggleButton(), ThemeToggleButton()],
       ),
       body: body,
     );

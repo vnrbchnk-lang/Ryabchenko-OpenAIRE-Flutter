@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:openaire_publications/common/locale/locale_cubit.dart';
 import 'package:openaire_publications/common/navigation/app_router.dart';
 import 'package:openaire_publications/common/theme/app_theme.dart';
 import 'package:openaire_publications/common/theme/theme_cubit.dart';
@@ -27,18 +28,25 @@ class App extends StatelessWidget {
                   ..load(),
           ),
           BlocProvider(create: (_) => ThemeCubit()),
+          BlocProvider(create: (_) => LocaleCubit()),
         ],
-        child: BlocBuilder<ThemeCubit, ThemeMode>(
-          builder: (context, themeMode) => MaterialApp.router(
-            routerConfig: AppRouter.router,
-            onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
-            debugShowCheckedModeBanner: false,
-            theme: AppTheme.light,
-            darkTheme: AppTheme.dark,
-            themeMode: themeMode,
-            localizationsDelegates: AppLocalizations.localizationsDelegates,
-            supportedLocales: AppLocalizations.supportedLocales,
-          ),
+        child: Builder(
+          builder: (context) {
+            final themeMode = context.watch<ThemeCubit>().state;
+            final locale = context.watch<LocaleCubit>().state;
+            return MaterialApp.router(
+              routerConfig: AppRouter.router,
+              onGenerateTitle: (context) =>
+                  AppLocalizations.of(context).appTitle,
+              debugShowCheckedModeBanner: false,
+              theme: AppTheme.light,
+              darkTheme: AppTheme.dark,
+              themeMode: themeMode,
+              locale: locale,
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+            );
+          },
         ),
       ),
     );
