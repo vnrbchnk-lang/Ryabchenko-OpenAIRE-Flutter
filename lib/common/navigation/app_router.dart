@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:openaire_publications/common/widgets/app_scaffold.dart';
+import 'package:openaire_publications/features/publication/presentation/view/publication_detail_screen.dart';
 import 'package:openaire_publications/features/publication/presentation/view/publication_list_screen.dart';
 import 'package:openaire_publications/l10n/app_localizations.dart';
 
 abstract final class AppRoutes {
   static const String list = '/';
+  static String detail(String id) => '/publication/$id';
 }
 
 abstract final class AppRouter {
@@ -19,6 +21,13 @@ abstract final class AppRouter {
         GoRoute(
           path: AppRoutes.list,
           builder: (context, state) => const PublicationListScreen(),
+          routes: [
+            GoRoute(
+              path: 'publication/:id',
+              builder: (context, state) =>
+                  PublicationDetailScreen(id: state.pathParameters['id']!),
+            ),
+          ],
         ),
       ],
       errorBuilder: (context, state) => const _NotFoundScreen(),
