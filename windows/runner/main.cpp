@@ -27,7 +27,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
   FlutterWindow window(project);
   Win32Window::Point origin(10, 10);
   Win32Window::Size size(1280, 720);
-  if (!window.Create(L"openaire_publications", origin, size)) {
+  if (!window.Create(L"\u041f\u0443\u0431\u043b\u0438\u043a\u0430\u0446\u0438\u0438", origin, size)) {
     return EXIT_FAILURE;
   }
   window.SetQuitOnClose(true);
