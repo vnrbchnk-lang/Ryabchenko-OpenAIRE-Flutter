@@ -13,4 +13,10 @@ class PublicationListCubit extends Cubit<PublicationListState> {
     if (isClosed) return;
     emit(PublicationListLoaded(query: '', items: items));
   }
+
+  Future<void> search(String query) async {
+    final items = await _repository.searchPublications(query);
+    if (isClosed) return;
+    emit(PublicationListLoaded(query: query, items: items));
+  }
 }
