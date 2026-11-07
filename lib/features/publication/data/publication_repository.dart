@@ -1,4 +1,6 @@
+import 'package:openaire_publications/common/network/load_exception.dart';
 import 'package:openaire_publications/features/publication/data/data_sources/i_publication_data_source.dart';
+import 'package:openaire_publications/features/publication/data/dto/publication_page_dto.dart';
 import 'package:openaire_publications/features/publication/data/mappers/publication_mapper.dart';
 import 'package:openaire_publications/features/publication/domain/i_publication_repository.dart';
 import 'package:openaire_publications/features/publication/domain/publication_details_model.dart';
@@ -38,14 +40,28 @@ final class PublicationRepository implements IPublicationRepository {
   @override
   Future<PublicationDetailsModel> getDetails(String id) async {
     final publication = (await _dataSource.getPublication(id)).toModel();
-    final pages = await Future.wait([
-      for (final subject in publication.subjects.take(_relatedSubjects))
-        _dataSource.getPublicationPage(
-          page: 1,
-          pageSize: _relatedPerSubject,
-          subject: subject,
-        ),
-    ]);
+    return PublicationDetailsModel(
+      publication: publication,
+      related: await _loadRelated(publication),
+    );
+  }
+
+  Future<List<PublicationModel>> _loadRelated(
+    PublicationModel publication,
+  ) async {
+    final List<PublicationPageDto> pages;
+    try {
+      pages = await Future.wait([
+        for (final subject in publication.subjects.take(_relatedSubjects))
+          _dataSource.getPublicationPage(
+            page: 1,
+            pageSize: _relatedPerSubject,
+            subject: subject,
+          ),
+      ]);
+    } on LoadException {
+      return const [];
+    }
     final related = <String, PublicationModel>{};
     for (final page in pages) {
       for (final dto in page.results) {
@@ -54,9 +70,6 @@ final class PublicationRepository implements IPublicationRepository {
         }
       }
     }
-    return PublicationDetailsModel(
-      publication: publication,
-      related: related.values.toList(),
-    );
+    return related.values.toList();
   }
 }
