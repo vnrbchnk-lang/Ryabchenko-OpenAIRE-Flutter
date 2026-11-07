@@ -1,5 +1,6 @@
 import 'package:openaire_publications/features/publication/data/dto/publication_dto.dart';
 import 'package:openaire_publications/features/publication/domain/publication_model.dart';
+import 'package:openaire_publications/features/publication/domain/publication_type.dart';
 
 extension PublicationDtoMapper on PublicationDto {
   PublicationModel toModel() => PublicationModel(
@@ -15,10 +16,13 @@ extension PublicationDtoMapper on PublicationDto {
       for (final subject in subjects ?? const <SubjectDto>[])
         subject.subject.value,
     ],
-    type: type,
+    type: _typesByName[type] ?? PublicationType.other,
     publisher: publisher,
   );
 }
+
+final Map<String, PublicationType> _typesByName = PublicationType.values
+    .asNameMap();
 
 String? _name(String? fullName) {
   final name = fullName?.replaceAll(RegExp(r'^[\s,]+|[\s,]+$'), '');

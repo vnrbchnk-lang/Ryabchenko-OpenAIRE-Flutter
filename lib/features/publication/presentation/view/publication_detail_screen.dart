@@ -8,6 +8,7 @@ import 'package:openaire_publications/features/publication/presentation/bloc/det
 import 'package:openaire_publications/features/publication/presentation/bloc/detail/publication_detail_event.dart';
 import 'package:openaire_publications/features/publication/presentation/bloc/detail/publication_detail_state.dart';
 import 'package:openaire_publications/features/publication/presentation/utils/publication_format.dart';
+import 'package:openaire_publications/features/publication/presentation/utils/publication_type_format.dart';
 import 'package:openaire_publications/features/publication/presentation/view/widgets/detail_field.dart';
 import 'package:openaire_publications/features/publication/presentation/view/widgets/related_list.dart';
 import 'package:openaire_publications/l10n/app_localizations.dart';
@@ -86,7 +87,10 @@ class _DetailContent extends StatelessWidget {
                 ),
               if (publisher != null)
                 DetailField(label: l10n.detailPublisher, value: publisher),
-              DetailField(label: l10n.detailType, value: publication.type),
+              DetailField(
+                label: l10n.detailType,
+                value: publication.type.label(l10n),
+              ),
               if (publication.subjects.isNotEmpty)
                 DetailField(
                   label: l10n.detailSubjects,

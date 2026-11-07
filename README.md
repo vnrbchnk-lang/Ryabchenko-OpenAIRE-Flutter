@@ -36,7 +36,7 @@
 | `publicationDate` | `publicationDate` | дата публикации, может отсутствовать |
 | `description` | `descriptions[0]` | аннотация без разметки JATS, может отсутствовать |
 | `subjects` | `subjects[].subject.value` | тематики |
-| `type` | `type` | тип: `publication`, `dataset`, `software` |
+| `type` | `type` | тип `PublicationType`: `publication`, `dataset`, `software`, `other`, незнакомое значение становится `other` |
 | `publisher` | `publisher` | издатель, может отсутствовать |
 
 Содержимое каталога на английском и не переводится. Переводится только интерфейс.
@@ -55,7 +55,7 @@ dart run build_runner build --delete-conflicting-outputs   # после прав
 
 | Папка | Что там |
 |---|---|
-| `features/publication/domain` | модель `PublicationModel` и интерфейс репозитория |
+| `features/publication/domain` | модель `PublicationModel`, тип `PublicationType` и интерфейс репозитория |
 | `features/publication/data/api` | API-клиент: один метод на один адрес, возвращает DTO |
 | `features/publication/data/dto` | DTO на `json_serializable`, рядом сгенерированные `.g.dart` |
 | `features/publication/data/data_sources` | интерфейс датасорса и сетевая реализация: `DioException` превращается в `LoadException` |
