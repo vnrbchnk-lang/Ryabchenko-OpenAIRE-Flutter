@@ -1,11 +1,11 @@
 {
-    "name": "openaire_publications",
-    "short_name": "openaire_publications",
+    "name": "Публикации",
+    "short_name": "Публикации",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "Публикации (OpenAIRE) — каркас на Flutter",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

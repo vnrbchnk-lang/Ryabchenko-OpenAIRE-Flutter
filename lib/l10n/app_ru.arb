@@ -1,0 +1,31 @@
+{
+  "@@locale": "ru",
+  "appTitle": "Публикации",
+  "actionToggleTheme": "Переключить тему",
+  "actionToggleLanguage": "Сменить язык",
+  "searchHint": "Поиск по названию",
+  "actionClearSearch": "Очистить поиск",
+  "nothingFound": "По запросу «{query}» ничего не найдено",
+  "@nothingFound": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "detailAuthors": "Авторы",
+  "detailPublicationDate": "Дата публикации",
+  "detailPublisher": "Издатель",
+  "detailType": "Тип",
+  "detailSubjects": "Тематики",
+  "detailRelated": "Похожие публикации",
+  "detailNotFound": "Публикации «{id}» в каталоге нет",
+  "@detailNotFound": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "pageNotFound": "Такой страницы нет"
+}

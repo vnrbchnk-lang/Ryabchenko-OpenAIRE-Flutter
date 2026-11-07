@@ -1,0 +1,17 @@
+{
+  "@@locale": "en",
+  "appTitle": "Publications",
+  "actionToggleTheme": "Toggle theme",
+  "actionToggleLanguage": "Change language",
+  "searchHint": "Search by title",
+  "actionClearSearch": "Clear search",
+  "nothingFound": "Nothing found for “{query}”",
+  "detailAuthors": "Authors",
+  "detailPublicationDate": "Publication date",
+  "detailPublisher": "Publisher",
+  "detailType": "Type",
+  "detailSubjects": "Subjects",
+  "detailRelated": "Related publications",
+  "detailNotFound": "No publication “{id}” in the catalog",
+  "pageNotFound": "No such page"
+}
