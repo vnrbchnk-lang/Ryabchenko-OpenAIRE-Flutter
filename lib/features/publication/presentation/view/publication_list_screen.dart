@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openaire_publications/common/widgets/app_scaffold.dart';
+import 'package:openaire_publications/common/widgets/load_error_view.dart';
 import 'package:openaire_publications/features/publication/presentation/bloc/list/publication_list_cubit.dart';
 import 'package:openaire_publications/features/publication/presentation/bloc/list/publication_list_state.dart';
 import 'package:openaire_publications/features/publication/presentation/view/widgets/publication_card.dart';
@@ -12,20 +13,22 @@ class PublicationListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<PublicationListCubit>();
     return AppScaffold(
       body: Column(
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-            child: SearchField(
-              onChanged: context.read<PublicationListCubit>().search,
-            ),
+            child: SearchField(onChanged: cubit.search),
           ),
           Expanded(
             child: BlocBuilder<PublicationListCubit, PublicationListState>(
               builder: (context, state) => switch (state) {
                 PublicationListLoading() => const Center(
                   child: CircularProgressIndicator(),
+                ),
+                PublicationListFailure(:final error) => Center(
+                  child: LoadErrorView(error: error, onRetry: cubit.retry),
                 ),
                 PublicationListLoaded(:final query, :final items)
                     when items.isEmpty =>

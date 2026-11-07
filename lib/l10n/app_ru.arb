@@ -27,5 +27,18 @@
       }
     }
   },
-  "pageNotFound": "Такой страницы нет"
+  "pageNotFound": "Такой страницы нет",
+  "errorNoConnection": "Нет связи с сервером. Проверьте интернет",
+  "errorTimeout": "Сервер долго не отвечает",
+  "errorNotFound": "Такой записи нет",
+  "errorServer": "Ошибка сервера ({code})",
+  "@errorServer": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "errorBadResponse": "Сервер прислал непонятный ответ",
+  "actionRetry": "Повторить"
 }
