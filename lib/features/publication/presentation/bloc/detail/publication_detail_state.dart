@@ -1,4 +1,4 @@
-import 'package:openaire_publications/features/publication/domain/publication_model.dart';
+import 'package:openaire_publications/features/publication/domain/publication_details_model.dart';
 
 sealed class PublicationDetailState {
   const PublicationDetailState();
@@ -9,10 +9,9 @@ final class PublicationDetailLoading extends PublicationDetailState {
 }
 
 final class PublicationDetailLoaded extends PublicationDetailState {
-  const PublicationDetailLoaded(this.publication, {required this.related});
+  const PublicationDetailLoaded(this.details);
 
-  final PublicationModel publication;
-  final List<PublicationModel> related;
+  final PublicationDetailsModel details;
 }
 
 final class PublicationDetailNotFound extends PublicationDetailState {

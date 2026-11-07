@@ -7,7 +7,7 @@ extension PublicationFormat on PublicationModel {
   String get subjectsLine => subjects.join(', ');
 
   IconData get typeIcon => switch (type) {
-    'data' => Icons.dataset_outlined,
+    'dataset' => Icons.dataset_outlined,
     'software' => Icons.code,
     _ => Icons.article_outlined,
   };

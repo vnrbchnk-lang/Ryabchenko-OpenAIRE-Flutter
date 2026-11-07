@@ -8,8 +8,13 @@ class PublicationListCubit extends Cubit<PublicationListState> {
 
   final IPublicationRepository _repository;
 
+  static const int _pageSize = 20;
+
   Future<void> load() async {
-    final items = await _repository.getPublications();
+    final items = await _repository.getPublications(
+      page: 1,
+      pageSize: _pageSize,
+    );
     if (isClosed) return;
     emit(PublicationListLoaded(query: '', items: items));
   }

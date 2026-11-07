@@ -13,9 +13,9 @@ final class PublicationModel {
   final String id;
   final String mainTitle;
   final List<String> authors;
-  final String publicationDate;
-  final String description;
+  final String? publicationDate;
+  final String? description;
   final List<String> subjects;
   final String type;
-  final String publisher;
+  final String? publisher;
 }
