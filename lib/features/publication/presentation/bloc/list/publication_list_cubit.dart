@@ -26,6 +26,47 @@ class PublicationListCubit extends Cubit<PublicationListState> {
     _searchTimer = Timer(_searchDelay, () => _load(query.trim()));
   }
 
+  Future<void> loadMore() async {
+    final current = state;
+    if (current is! PublicationListLoaded ||
+        !current.hasMore ||
+        current.isLoadingMore) {
+      return;
+    }
+    emit(
+      PublicationListLoaded(
+        query: current.query,
+        items: current.items,
+        hasMore: true,
+        isLoadingMore: true,
+      ),
+    );
+    try {
+      final next = await _repository.getPublications(
+        page: current.items.length ~/ _pageSize + 1,
+        pageSize: _pageSize,
+      );
+      if (isClosed || state.query != current.query) return;
+      emit(
+        PublicationListLoaded(
+          query: current.query,
+          items: [...current.items, ...next],
+          hasMore: next.length == _pageSize,
+        ),
+      );
+    } on LoadException catch (error) {
+      if (isClosed || state.query != current.query) return;
+      emit(
+        PublicationListLoaded(
+          query: current.query,
+          items: current.items,
+          hasMore: true,
+          loadMoreError: error,
+        ),
+      );
+    }
+  }
+
   Future<void> _load(String query) async {
     emit(PublicationListLoading(query: query));
     try {
@@ -33,7 +74,13 @@ class PublicationListCubit extends Cubit<PublicationListState> {
           ? await _repository.getPublications(page: 1, pageSize: _pageSize)
           : await _repository.searchPublications(query);
       if (isClosed || state.query != query) return;
-      emit(PublicationListLoaded(query: query, items: items));
+      emit(
+        PublicationListLoaded(
+          query: query,
+          items: items,
+          hasMore: query.isEmpty && items.length == _pageSize,
+        ),
+      );
     } on LoadException catch (error) {
       if (isClosed || state.query != query) return;
       emit(PublicationListFailure(query: query, error: error));
