@@ -1,3 +1,5 @@
+import 'package:openaire_publications/features/publication/domain/publication_type.dart';
+
 final class PublicationModel {
   const PublicationModel({
     required this.id,
@@ -13,9 +15,9 @@ final class PublicationModel {
   final String id;
   final String mainTitle;
   final List<String> authors;
-  final String publicationDate;
-  final String description;
+  final String? publicationDate;
+  final String? description;
   final List<String> subjects;
-  final String type;
-  final String publisher;
+  final PublicationType type;
+  final String? publisher;
 }

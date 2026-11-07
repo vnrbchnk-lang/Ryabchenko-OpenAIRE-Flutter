@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openaire_publications/common/locale/locale_cubit.dart';
 import 'package:openaire_publications/common/navigation/app_router.dart';
+import 'package:openaire_publications/common/network/dio_client.dart';
 import 'package:openaire_publications/common/theme/app_theme.dart';
 import 'package:openaire_publications/common/theme/theme_cubit.dart';
+import 'package:openaire_publications/features/publication/data/api/publication_api.dart';
+import 'package:openaire_publications/features/publication/data/data_sources/network_publication_data_source.dart';
 import 'package:openaire_publications/features/publication/data/publication_repository.dart';
 import 'package:openaire_publications/features/publication/domain/i_publication_repository.dart';
 import 'package:openaire_publications/features/publication/presentation/bloc/list/publication_list_cubit.dart';
@@ -17,7 +20,9 @@ class App extends StatelessWidget {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider<IPublicationRepository>(
-          create: (_) => const PublicationRepository(),
+          create: (_) => PublicationRepository(
+            NetworkPublicationDataSource(PublicationApi(DioClient.create())),
+          ),
         ),
       ],
       child: MultiBlocProvider(

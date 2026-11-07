@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:openaire_publications/features/publication/domain/publication_model.dart';
-import 'package:openaire_publications/features/publication/presentation/utils/publication_format.dart';
+import 'package:openaire_publications/features/publication/presentation/utils/publication_type_format.dart';
 
 class PublicationPlaceholder extends StatelessWidget {
   const PublicationPlaceholder({super.key, required this.publication});
@@ -17,7 +17,7 @@ class PublicationPlaceholder extends StatelessWidget {
         color: colors.secondaryContainer,
         shape: BoxShape.circle,
       ),
-      child: Icon(publication.typeIcon, color: colors.onSecondaryContainer),
+      child: Icon(publication.type.icon, color: colors.onSecondaryContainer),
     );
   }
 }

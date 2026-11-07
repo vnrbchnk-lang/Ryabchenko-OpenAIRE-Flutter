@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openaire_publications/common/widgets/app_scaffold.dart';
+import 'package:openaire_publications/common/widgets/load_error_view.dart';
 import 'package:openaire_publications/features/publication/domain/i_publication_repository.dart';
-import 'package:openaire_publications/features/publication/domain/publication_model.dart';
+import 'package:openaire_publications/features/publication/domain/publication_details_model.dart';
 import 'package:openaire_publications/features/publication/presentation/bloc/detail/publication_detail_bloc.dart';
 import 'package:openaire_publications/features/publication/presentation/bloc/detail/publication_detail_event.dart';
 import 'package:openaire_publications/features/publication/presentation/bloc/detail/publication_detail_state.dart';
 import 'package:openaire_publications/features/publication/presentation/utils/publication_format.dart';
+import 'package:openaire_publications/features/publication/presentation/utils/publication_type_format.dart';
 import 'package:openaire_publications/features/publication/presentation/view/widgets/detail_field.dart';
 import 'package:openaire_publications/features/publication/presentation/view/widgets/related_list.dart';
 import 'package:openaire_publications/l10n/app_localizations.dart';
@@ -31,8 +33,17 @@ class PublicationDetailScreen extends StatelessWidget {
             PublicationDetailNotFound(:final id) => Center(
               child: Text(AppLocalizations.of(context).detailNotFound(id)),
             ),
-            PublicationDetailLoaded(:final publication, :final related) =>
-              _DetailContent(publication: publication, related: related),
+            PublicationDetailFailure(:final id, :final error) => Center(
+              child: LoadErrorView(
+                error: error,
+                onRetry: () => context.read<PublicationDetailBloc>().add(
+                  PublicationDetailRetried(id),
+                ),
+              ),
+            ),
+            PublicationDetailLoaded(:final details) => _DetailContent(
+              details: details,
+            ),
           },
         ),
       ),
@@ -41,15 +52,19 @@ class PublicationDetailScreen extends StatelessWidget {
 }
 
 class _DetailContent extends StatelessWidget {
-  const _DetailContent({required this.publication, required this.related});
+  const _DetailContent({required this.details});
 
-  final PublicationModel publication;
-  final List<PublicationModel> related;
+  final PublicationDetailsModel details;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context);
+    final publication = details.publication;
+    final publicationDate = publication.publicationDate;
+    final publisher = publication.publisher;
+    final description = publication.description;
+    final related = details.related;
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Center(
@@ -60,24 +75,29 @@ class _DetailContent extends StatelessWidget {
             spacing: 12,
             children: [
               Text(publication.mainTitle, style: theme.textTheme.headlineSmall),
+              if (publication.authors.isNotEmpty)
+                DetailField(
+                  label: l10n.detailAuthors,
+                  value: publication.authorsLine,
+                ),
+              if (publicationDate != null)
+                DetailField(
+                  label: l10n.detailPublicationDate,
+                  value: publicationDate,
+                ),
+              if (publisher != null)
+                DetailField(label: l10n.detailPublisher, value: publisher),
               DetailField(
-                label: l10n.detailAuthors,
-                value: publication.authorsLine,
+                label: l10n.detailType,
+                value: publication.type.label(l10n),
               ),
-              DetailField(
-                label: l10n.detailPublicationDate,
-                value: publication.publicationDate,
-              ),
-              DetailField(
-                label: l10n.detailPublisher,
-                value: publication.publisher,
-              ),
-              DetailField(label: l10n.detailType, value: publication.type),
-              DetailField(
-                label: l10n.detailSubjects,
-                value: publication.subjectsLine,
-              ),
-              Text(publication.description, style: theme.textTheme.bodyLarge),
+              if (publication.subjects.isNotEmpty)
+                DetailField(
+                  label: l10n.detailSubjects,
+                  value: publication.subjectsLine,
+                ),
+              if (description != null)
+                Text(description, style: theme.textTheme.bodyLarge),
               if (related.isNotEmpty) ...[
                 const SizedBox(height: 12),
                 Text(l10n.detailRelated, style: theme.textTheme.titleMedium),
