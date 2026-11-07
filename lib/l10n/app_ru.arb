@@ -5,6 +5,7 @@
   "actionToggleLanguage": "Сменить язык",
   "searchHint": "Поиск по названию",
   "actionClearSearch": "Очистить поиск",
+  "listEmpty": "Публикаций нет",
   "nothingFound": "По запросу «{query}» ничего не найдено",
   "@nothingFound": {
     "placeholders": {

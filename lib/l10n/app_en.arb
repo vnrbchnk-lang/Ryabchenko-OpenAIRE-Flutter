@@ -5,6 +5,7 @@
   "actionToggleLanguage": "Change language",
   "searchHint": "Search by title",
   "actionClearSearch": "Clear search",
+  "listEmpty": "No publications",
   "nothingFound": "Nothing found for “{query}”",
   "detailAuthors": "Authors",
   "detailPublicationDate": "Publication date",

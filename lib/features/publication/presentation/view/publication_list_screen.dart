@@ -31,6 +31,9 @@ class PublicationListScreen extends StatelessWidget {
                   child: LoadErrorView(error: error, onRetry: cubit.retry),
                 ),
                 PublicationListLoaded(:final query, :final items)
+                    when items.isEmpty && query.isEmpty =>
+                  Center(child: Text(AppLocalizations.of(context).listEmpty)),
+                PublicationListLoaded(:final query, :final items)
                     when items.isEmpty =>
                   Center(
                     child: Padding(
