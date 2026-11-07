@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openaire_publications/common/widgets/app_scaffold.dart';
+import 'package:openaire_publications/common/widgets/load_error_view.dart';
 import 'package:openaire_publications/features/publication/domain/i_publication_repository.dart';
 import 'package:openaire_publications/features/publication/domain/publication_details_model.dart';
 import 'package:openaire_publications/features/publication/presentation/bloc/detail/publication_detail_bloc.dart';
@@ -30,6 +31,14 @@ class PublicationDetailScreen extends StatelessWidget {
             ),
             PublicationDetailNotFound(:final id) => Center(
               child: Text(AppLocalizations.of(context).detailNotFound(id)),
+            ),
+            PublicationDetailFailure(:final id, :final error) => Center(
+              child: LoadErrorView(
+                error: error,
+                onRetry: () => context.read<PublicationDetailBloc>().add(
+                  PublicationDetailRetried(id),
+                ),
+              ),
             ),
             PublicationDetailLoaded(:final details) => _DetailContent(
               details: details,

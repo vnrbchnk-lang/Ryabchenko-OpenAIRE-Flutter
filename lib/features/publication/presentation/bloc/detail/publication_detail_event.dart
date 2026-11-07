@@ -1,9 +1,13 @@
 sealed class PublicationDetailEvent {
-  const PublicationDetailEvent();
+  const PublicationDetailEvent(this.id);
+
+  final String id;
 }
 
 final class PublicationDetailOpened extends PublicationDetailEvent {
-  const PublicationDetailOpened(this.id);
+  const PublicationDetailOpened(super.id);
+}
 
-  final String id;
+final class PublicationDetailRetried extends PublicationDetailEvent {
+  const PublicationDetailRetried(super.id);
 }

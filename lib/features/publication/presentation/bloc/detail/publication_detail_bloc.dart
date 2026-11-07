@@ -8,20 +8,24 @@ class PublicationDetailBloc
     extends Bloc<PublicationDetailEvent, PublicationDetailState> {
   PublicationDetailBloc(this._repository)
     : super(const PublicationDetailLoading()) {
-    on<PublicationDetailOpened>(_onOpened);
+    on<PublicationDetailOpened>(_onLoadRequested);
+    on<PublicationDetailRetried>(_onLoadRequested);
   }
 
   final IPublicationRepository _repository;
 
-  Future<void> _onOpened(
-    PublicationDetailOpened event,
+  Future<void> _onLoadRequested(
+    PublicationDetailEvent event,
     Emitter<PublicationDetailState> emit,
   ) async {
+    emit(const PublicationDetailLoading());
     try {
       final details = await _repository.getDetails(event.id);
       emit(PublicationDetailLoaded(details));
     } on NotFoundException {
       emit(PublicationDetailNotFound(event.id));
+    } on LoadException catch (error) {
+      emit(PublicationDetailFailure(event.id, error));
     }
   }
 }
